@@ -50,8 +50,9 @@ client.on('ready', () => {
 
 //Events on message
 client.on('message', (message) => {
+
   //Check if message starts with prefix and remove prefix from string
-  if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+  if (!message.content.startsWith(PREFIX) || message.author.bot || message.channel.id !== process.env.DISCORDJS_TEXTCHANNEL_ID) return;
   var args = [];
   console.log(`[${message.author.tag}]: ${message.content}`);
   const argsTemp = message.content.slice(PREFIX.length).trim();
