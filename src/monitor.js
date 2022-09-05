@@ -10,7 +10,7 @@
 
 require("dotenv").config();
 
-const { Client, GatewayIntentBits, MessageEmbed } = require("discord.js");
+const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
 var client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -84,7 +84,7 @@ client.on("messageCreate", (message) => {
   switch (CMD_NAME.toUpperCase()) {
     case "HELP":
       {
-        var embed = new MessageEmbed();
+        var embed = new EmbedBuilder();
         embed.setTitle("Commands");
         embed.setColor("0x6058f3");
         embed.addField("`!help`", "Show all commands.");
@@ -159,7 +159,7 @@ client.on("messageCreate", (message) => {
             });
 
             //Send confirmation message
-            var embed = new MessageEmbed();
+            var embed = new EmbedBuilder();
             embed.addField(
               `Site added:`,
               `Name: ${site.id}\nURL: ${site.url}\nCSS: \`${site.css}\`\n`
@@ -200,7 +200,7 @@ client.on("messageCreate", (message) => {
             "No sites to monitor. Add one with `!add`."
           );
 
-        var embed = new MessageEmbed();
+        var embed = new EmbedBuilder();
         for (let i = 0; i < sitesToMonitor.length; i++) {
           embed.setTitle(`${sitesToMonitor.length} site(s) being monitored:`);
           embed.addField(
@@ -322,7 +322,7 @@ function update() {
           sitesToMonitor[i].hash = hash;
 
           //Send update to Discord channel
-          var embed = new MessageEmbed();
+          var embed = new EmbedBuilder();
           embed.setTitle(`🔎 ${sitesToMonitor[i].id} changed!`);
           embed.addField(`URL`, `${sitesToMonitor[i].url}`);
           embed.addField(`CSS`, `\`${sitesToMonitor[i].css}\``);
