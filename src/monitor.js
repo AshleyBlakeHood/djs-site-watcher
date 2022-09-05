@@ -87,22 +87,34 @@ client.on("messageCreate", (message) => {
         var embed = new EmbedBuilder();
         embed.setTitle("Commands");
         embed.setColor("0x6058f3");
-        embed.addField("`!help`", "Show all commands.");
-        embed.addField(
-          '`!add <URL> "<CSS SELECTOR>"`',
-          "Add site to monitor with optional CSS selector."
-        );
-        embed.addField("`!remove <NR>`", "Remove site from list.");
-        embed.addField("`!list`", "Show list of added sites.");
-        embed.addField("`!update`", "Manually update sites.");
-        embed.addField("`!interval`", "Set update interval, default `5`.");
-        embed.addField(
-          "`!start`",
-          "Start automatic monitoring on set interval, default `on`."
-        );
-        embed.addField("`!stop`", "Stop monitoring.");
-        embed.addField("`!status`", "Show monitoring status.");
-        message.channel.send(embed);
+        embed.addFields({ name: "`!help`", value: "Show all commands." });
+        embed.addFields({
+          name: '`!add <URL> "<CSS SELECTOR>"`',
+          value: "Add site to monitor with optional CSS selector.",
+        });
+        embed.addFields({
+          name: "`!remove <NR>`",
+          value: "Remove site from list.",
+        });
+        embed.addFields({
+          name: "`!list`",
+          value: "Show list of added sites.",
+        });
+        embed.addFields({ name: "`!update`", value: "Manually update sites." });
+        embed.addFields({
+          name: "`!interval`",
+          value: "Set update interval, default `5`.",
+        });
+        embed.addFields({
+          name: "`!start`",
+          value: "Start automatic monitoring on set interval, default `on`.",
+        });
+        embed.addFields({ name: "`!stop`", value: "Stop monitoring." });
+        embed.addFields({
+          name: "`!status`",
+          value: "Show monitoring status.",
+        });
+        message.channel.send({ embeds: [embed] });
       }
       break;
     case "ADD":
@@ -160,12 +172,12 @@ client.on("messageCreate", (message) => {
 
             //Send confirmation message
             var embed = new EmbedBuilder();
-            embed.addField(
-              `Site added:`,
-              `Name: ${site.id}\nURL: ${site.url}\nCSS: \`${site.css}\`\n`
-            );
+            embed.addFields({
+              name: `Site added:`,
+              value: `Name: ${site.id}\nURL: ${site.url}\nCSS: \`${site.css}\`\n`,
+            });
             embed.setColor("0x6058f3");
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
           })
           .catch((err) => {
             //Return any errors that might occur, like invalid site/css
@@ -203,18 +215,18 @@ client.on("messageCreate", (message) => {
         var embed = new EmbedBuilder();
         for (let i = 0; i < sitesToMonitor.length; i++) {
           embed.setTitle(`${sitesToMonitor.length} site(s) being monitored:`);
-          embed.addField(
-            `${sitesToMonitor[i].id}`,
-            `URL: ${sitesToMonitor[i].url}\nCSS: \`${
+          embed.addFields({
+            name: `${sitesToMonitor[i].id}`,
+            value: `URL: ${sitesToMonitor[i].url}\nCSS: \`${
               sitesToMonitor[i].css
             }\`\nChecked: ${sitesToMonitor[i].lastChecked}\nUpdated: ${
               sitesToMonitor[i].lastUpdated
-            }\nRemove: \`!remove ${i + 1}\``
-          );
+            }\nRemove: \`!remove ${i + 1}\``,
+          });
           embed.setColor("0x6058f3");
         }
 
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
       }
       break;
     case "UPDATE":
@@ -324,16 +336,23 @@ function update() {
           //Send update to Discord channel
           var embed = new EmbedBuilder();
           embed.setTitle(`🔎 ${sitesToMonitor[i].id} changed!`);
-          embed.addField(`URL`, `${sitesToMonitor[i].url}`);
-          embed.addField(`CSS`, `\`${sitesToMonitor[i].css}\``);
-          embed.addField(`Previous change`, `${prevUpdate}`, true);
-          embed.addField(
-            `Updated on`,
-            `${sitesToMonitor[i].lastUpdated}`,
-            true
-          );
+          embed.addFields({ name: `URL`, value: `${sitesToMonitor[i].url}` });
+          embed.addFields({
+            name: `CSS`,
+            value: `\`${sitesToMonitor[i].css}\``,
+          });
+          embed.addFields({
+            name: `Previous change`,
+            value: `${prevUpdate}`,
+            inline: true,
+          });
+          embed.addFields({
+            name: `Updated on`,
+            value: `${sitesToMonitor[i].lastUpdated}`,
+            inline: true,
+          });
           embed.setColor("0x6058f3");
-          channel.send(embed);
+          channel.send({ embeds: [embed] });
 
           //Save the new data in the file
           fs.outputJSON(file, sitesToMonitor, { spaces: 2 }, (err) => {
